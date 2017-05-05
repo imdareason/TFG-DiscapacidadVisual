@@ -21,6 +21,7 @@ import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 
@@ -66,25 +67,35 @@ public class MainActivity_show_camera extends AppCompatActivity implements CvCam
     }
 
     public void onCameraViewStarted(int width, int height ){
-        mRgba = new Mat(height,width,CvType.CV_8UC4);
-        mRgbaF = new Mat(height,width,CvType.CV_8UC4);
+        mRgba = new Mat(height,width,CvType.CV_8U);
+        mRgbaF = new Mat(height,width,CvType.CV_8U);
         mRgbaT = new Mat(height,width,CvType.CV_8UC4);
     }
 
     @Override
     public void onCameraViewStopped() {
         mRgba.release();
-        //Bitmap bitmapImage = null;
-        //Utils.matToBitmap(mRgba,bitmapImage);
     }
 
     @Override
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
         mRgba = inputFrame.rgba();
-        /*Core.transpose(mRgba,mRgbaT);
-        Imgproc.resize(mRgbaT,mRgbaF,mRgbaF.size(),0,0,0);
-        Core.flip(mRgbaF,mRgba,1);
-*/
+        //Aux Mat masks.
+        Mat grayScale = inputFrame.gray();
+        Mat yellowMask = new Mat();
+
+
+        //TO DO: Check if this could be done in background thread.
+        
+        /* Background turned into Yellow with originall textColor fontColor*/
+        Imgproc.threshold(grayScale,yellowMask,100,255,Imgproc.THRESH_BINARY);
+        mRgba.setTo(new Scalar(255,255,0),yellowMask);
+
+
+
+        /* Putting text into pure black */
+        Imgproc.threshold(grayScale,mRgbaF,128,255,Imgproc.THRESH_BINARY_INV);
+        mRgba.setTo(new Scalar(0,0,0),mRgbaF);
         return mRgba;
     }
 
