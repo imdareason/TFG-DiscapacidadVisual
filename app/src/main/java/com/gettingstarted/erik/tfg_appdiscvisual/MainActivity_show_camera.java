@@ -2,6 +2,7 @@ package com.gettingstarted.erik.tfg_appdiscvisual;
 
 //Android Classes
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -68,8 +69,9 @@ public class MainActivity_show_camera extends AppCompatActivity implements CvCam
 
     public void onCameraViewStarted(int width, int height ){
         mRgba = new Mat(height,width,CvType.CV_8U);
-        mRgbaF = new Mat(height,width,CvType.CV_8U);
+        mGrayScale = new Mat(height,width,CvType.CV_8U);
         mRgbaT = new Mat(height,width,CvType.CV_8UC4);
+
     }
 
     @Override
@@ -79,23 +81,25 @@ public class MainActivity_show_camera extends AppCompatActivity implements CvCam
 
     @Override
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
-        mRgba = inputFrame.rgba();
-        //Aux Mat masks.
+        mRgba = inputFrame.gray();
+        //mGrayScale = inputFrame.gray();
+
         Mat grayScale = inputFrame.gray();
-        Mat yellowMask = new Mat();
+        Mat blackTextColor = new Mat();
+        Mat backgroundColor = new Mat();
+
+        Imgproc.threshold(grayScale,blackTextColor,128,255,Imgproc.THRESH_OTSU);
+        mRgba.setTo(new Scalar(0,0,0),blackTextColor);
+
+        //Imgproc.threshold(grayScale,backgroundColor,100,255,Imgproc.THRESH_BINARY);
+        //mRgba.setTo(new Scalar(255,0,0),backgroundColor);
 
 
-        //TO DO: Check if this could be done in background thread.
-        
-        /* Background turned into Yellow with originall textColor fontColor*/
-        Imgproc.threshold(grayScale,yellowMask,100,255,Imgproc.THRESH_BINARY);
-        mRgba.setTo(new Scalar(255,255,0),yellowMask);
 
 
-
-        /* Putting text into pure black */
-        Imgproc.threshold(grayScale,mRgbaF,128,255,Imgproc.THRESH_BINARY_INV);
-        mRgba.setTo(new Scalar(0,0,0),mRgbaF);
+        grayScale.release();
+        backgroundColor.release();
+        blackTextColor.release();
         return mRgba;
     }
 
@@ -109,7 +113,7 @@ public class MainActivity_show_camera extends AppCompatActivity implements CvCam
     private MenuItem mItemSwitchCamera = null;
 
     Mat mRgba;
-    Mat mRgbaF;
+    Mat mGrayScale;
     Mat mRgbaT;
 
     public MainActivity_show_camera(){
@@ -132,5 +136,5 @@ public class MainActivity_show_camera extends AppCompatActivity implements CvCam
         }
     };
 
-    
+
 }
