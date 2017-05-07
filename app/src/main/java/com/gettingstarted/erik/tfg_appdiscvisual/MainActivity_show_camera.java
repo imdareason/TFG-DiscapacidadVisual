@@ -8,7 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 //OpenCV classes
 import org.opencv.android.JavaCameraView;
@@ -29,6 +32,32 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.android.OpenCVLoader;
 
 public class MainActivity_show_camera extends AppCompatActivity implements CvCameraViewListener2{
+    private static final String TAG = "OCVSample::Activty";
+    private static final int backgroundSpinnerOption = 0;
+    private static final int textSpinnerOption = 1;
+    //Loads camera view of OpenCV for us to use.
+    private CameraBridgeViewBase mOpenCvCameraView;
+
+    //SpinnerHandler
+    private Spinner spinner;
+    private Spinner textSpinner;
+    private SpinnerHandler spinnerHandler;
+    private SpinnerHandler textSpinnerHandler;
+
+    //Used in Camera selection from menu
+    private boolean mIsJavaCamera = true;
+    private MenuItem mItemSwitchCamera = null;
+
+    Mat mRgba;
+    Mat mGrayScale;
+    Mat mRgbaT;
+
+
+    public MainActivity_show_camera(){
+        spinnerHandler = new SpinnerHandler(backgroundSpinnerOption);
+        textSpinnerHandler = new SpinnerHandler(textSpinnerOption);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +66,12 @@ public class MainActivity_show_camera extends AppCompatActivity implements CvCam
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.show_camera);
         mOpenCvCameraView = (JavaCameraView)findViewById(R.id.show_camera_activity_java_surface_view);
+        spinner = (Spinner)findViewById(R.id.spinner);
+        textSpinner = (Spinner)findViewById(R.id.spinner_text);
+
+        spinner.setOnItemSelectedListener(spinnerHandler);
+        textSpinner.setOnItemSelectedListener(textSpinnerHandler);
+
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
         mOpenCvCameraView.setCvCameraViewListener(this);
 
@@ -81,43 +116,25 @@ public class MainActivity_show_camera extends AppCompatActivity implements CvCam
 
     @Override
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
-        mRgba = inputFrame.gray();
-        //mGrayScale = inputFrame.gray();
+        mRgba = inputFrame.rgba();
 
         Mat grayScale = inputFrame.gray();
-        Mat blackTextColor = new Mat();
+        Mat textColor = new Mat();
         Mat backgroundColor = new Mat();
 
-        Imgproc.threshold(grayScale,blackTextColor,128,255,Imgproc.THRESH_OTSU);
-        mRgba.setTo(new Scalar(0,0,0),blackTextColor);
+        Imgproc.threshold(grayScale,textColor,128,255,Imgproc.THRESH_OTSU);
+        mRgba.setTo(FilterHandler.getInstance().getTextColor(),textColor);
 
-        //Imgproc.threshold(grayScale,backgroundColor,100,255,Imgproc.THRESH_BINARY);
-        //mRgba.setTo(new Scalar(255,0,0),backgroundColor);
+        Imgproc.threshold(grayScale,backgroundColor,100,255,Imgproc.THRESH_BINARY);
+        mRgba.setTo(FilterHandler.getInstance().getBackgroundColor(),backgroundColor);
 
 
 
 
         grayScale.release();
         backgroundColor.release();
-        blackTextColor.release();
+        textColor.release();
         return mRgba;
-    }
-
-    private static final String TAG = "OCVSample::Activty";
-
-    //Loads camera view of OpenCV for us to use.
-    private CameraBridgeViewBase mOpenCvCameraView;
-
-    //Used in Camera selection from menu
-    private boolean mIsJavaCamera = true;
-    private MenuItem mItemSwitchCamera = null;
-
-    Mat mRgba;
-    Mat mGrayScale;
-    Mat mRgbaT;
-
-    public MainActivity_show_camera(){
-        Log.i(TAG,"Instantiated new "+this.getClass());
     }
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
@@ -135,6 +152,10 @@ public class MainActivity_show_camera extends AppCompatActivity implements CvCam
             }
         }
     };
+
+    public void settingsClicked(View view){
+        Toast.makeText(getApplicationContext(),"Clicked Settings",Toast.LENGTH_SHORT).show();
+    }
 
 
 }

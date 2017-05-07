@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">TFG-AppDiscVisual</string>
+    <string name="settings">Settings</string>
+    <string name="backgroundOptionsName">BackgroundColor</string>
+    <string name="textColorOptionsName">TextColor</string>
+    <string-array name="backgroundColorFilterNames">
+        <item>Black</item>
+        <item>Yellow</item>
+        <item>Red</item>
+        <item>Blue</item>
+        <item>Green</item>
+    </string-array>
+    <string-array name="textColorFilterNames">
+        <item>Black</item>
+        <item>White</item>
+    </string-array>
 </resources>
