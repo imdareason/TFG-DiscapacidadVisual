@@ -13,7 +13,7 @@
         opencv:camera_id="any"/>
 
     <Button
-        android:id="@+id/settings"
+        android:id="@+id/settingsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="settingsClicked"
@@ -53,6 +53,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@id/textColorText"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/colorDetection"
+        android:text="Color Detection"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@id/spinner_text"
+        android:onClick="colorDetectionClicked"/>
 
 
 
