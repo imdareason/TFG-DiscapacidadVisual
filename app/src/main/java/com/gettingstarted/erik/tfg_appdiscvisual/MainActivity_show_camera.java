@@ -11,6 +11,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +40,7 @@ public class MainActivity_show_camera extends AppCompatActivity implements CvCam
     private static final int textSpinnerOption = 1;
 
     //Loads camera view of OpenCV for us to use.
-    private CameraBridgeViewBase mOpenCvCameraView;
+    private ZoomCameraView mOpenCvCameraView;
 
     //SpinnerHandler
     private SpinnerHandler spinnerHandler;
@@ -57,6 +58,9 @@ public class MainActivity_show_camera extends AppCompatActivity implements CvCam
     Spinner textSpinner;
     TextView backgroundTextView;
     TextView textTextView;
+
+    //ZoomCameraView
+    ZoomCameraView zoomCameraView;
 
     Mat mRgba;
     Mat mGrayScale;
@@ -77,20 +81,17 @@ public class MainActivity_show_camera extends AppCompatActivity implements CvCam
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.show_camera);
-
-        mOpenCvCameraView = (JavaCameraView)findViewById(R.id.show_camera_activity_java_surface_view);
+        mOpenCvCameraView = (ZoomCameraView) findViewById(R.id.show_camera_activity_java_surface_view);
         backgroundSpinner = (Spinner)findViewById(R.id.spinner);
-        textSpinner = (Spinner)findViewById(R.id.spinner_text);
         backgroundTextView = (TextView)findViewById(R.id.backgroundText);
-        textTextView = (TextView)findViewById(R.id.textColorText);
         if (!filteringIsEnabled){
             hideFilteringViews();
         }
 
         backgroundSpinner.setOnItemSelectedListener(spinnerHandler);
-        textSpinner.setOnItemSelectedListener(textSpinnerHandler);
 
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
+        mOpenCvCameraView.setZoomControl((SeekBar) findViewById(R.id.CameraZoomControls));
         mOpenCvCameraView.setCvCameraViewListener(this);
 
     }

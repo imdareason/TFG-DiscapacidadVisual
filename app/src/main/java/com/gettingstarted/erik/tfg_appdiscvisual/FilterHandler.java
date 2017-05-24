@@ -50,18 +50,23 @@ public class FilterHandler {
         switch (backgroundColorOption){
             case Black:
                 backgroundColor = new Scalar(0,0,0);
+                setTextColorOption(Black);
                 break;
             case Yellow:
                 backgroundColor = new Scalar(255,255,0);
+                setTextColorOption(Black);
                 break;
             case Red:
                 backgroundColor = new Scalar(255,0,0);
+                setTextColorOption(Black);
                 break;
             case Blue:
                 backgroundColor = new Scalar(0,0,255);
+                setTextColorOption(Black);
                 break;
             case Green:
                 backgroundColor = new Scalar(0,255,0);
+                setTextColorOption(Black);
                 break;
         }
 
