@@ -4,11 +4,14 @@
     <string name="backgroundOptionsName">BackgroundColor</string>
     <string name="textColorOptionsName">TextColor</string>
     <string-array name="backgroundColorFilterNames">
-        <item>Black</item>
-        <item>Yellow</item>
-        <item>Red</item>
-        <item>Blue</item>
-        <item>Green</item>
+        <item>Escala de grises</item>
+        <item>Blanco y azul</item>
+        <item>Negro y Blanco</item>
+        <item>Amarillo y Negro</item>
+        <item>Amarillo y azul</item>
+        <item>Rosa y Negro</item>
+        <item>Azul y Negro</item>
+        <item>Azul y Blanco</item>
     </string-array>
     <string-array name="textColorFilterNames">
         <item>Black</item>

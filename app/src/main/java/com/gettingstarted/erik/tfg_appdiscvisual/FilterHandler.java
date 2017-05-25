@@ -14,12 +14,26 @@ public class FilterHandler {
     public int backgroundColorOption;
     public int textColorOption;
 
-    private static final int Black = 0;
-    private static final int Yellow = 1;
-    private static final int Red = 2;
-    private static final int Blue = 3;
-    private static final int Green = 4;
-    private static final int White = 5;
+    public boolean isFilterNone() {
+        return filterNone;
+    }
+
+    public void setFilterNone(boolean filterNone) {
+        this.filterNone = filterNone;
+    }
+
+    private boolean filterNone;
+
+    private static final int GrayScale = 0;
+    private static final int BlueText = 1;
+    private static final int Black = 2;
+    private static final int Yellow = 3;
+    private static final int YellowBlueText = 4;
+    private static final int Pink = 5;
+    private static final int Blue = 6;
+    private static final int BlueWhiteText = 7;
+    private static final int White = 8;
+
 
     public static FilterHandler getInstance() {
         if (filterHandlerInstance == null) {
@@ -48,26 +62,43 @@ public class FilterHandler {
 
     private void updateBackgroundColor(){
         switch (backgroundColorOption){
+            case GrayScale:
+                setFilterNone(true);
+                break;
             case Black:
                 backgroundColor = new Scalar(0,0,0);
                 setTextColorOption(Black);
+                setFilterNone(false);
                 break;
             case Yellow:
                 backgroundColor = new Scalar(255,255,0);
                 setTextColorOption(Black);
+                setFilterNone(false);
                 break;
-            case Red:
-                backgroundColor = new Scalar(255,0,0);
+            case Pink:
+                backgroundColor = new Scalar(255,0,255);
                 setTextColorOption(Black);
+                setFilterNone(false);
                 break;
             case Blue:
-                backgroundColor = new Scalar(0,0,255);
+                backgroundColor = new Scalar(0,255,255);
                 setTextColorOption(Black);
+                setFilterNone(false);
                 break;
-            case Green:
-                backgroundColor = new Scalar(0,255,0);
-                setTextColorOption(Black);
+            case BlueWhiteText:
+                backgroundColor = new Scalar(0,255,255);
+                setTextColorOption(White);
+                setFilterNone(false);
                 break;
+            case BlueText:
+                backgroundColor = new Scalar(255,255,255);
+                setTextColorOption(BlueText);
+                setFilterNone(false);
+
+            case YellowBlueText:
+                backgroundColor = new Scalar(255,255,0);
+                setTextColorOption(BlueText);
+                setFilterNone(false);
         }
 
     }
@@ -77,7 +108,9 @@ public class FilterHandler {
             case Black:
                 textColor = new Scalar(0,0,0);
                 break;
-            default:
+            case BlueText:
+                textColor = new Scalar(0,128,255);
+            case White:
                 textColor = new Scalar(255,255,255);
                 break;
         }

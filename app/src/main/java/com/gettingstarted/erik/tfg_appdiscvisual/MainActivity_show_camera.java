@@ -1,54 +1,39 @@
 package com.gettingstarted.erik.tfg_appdiscvisual;
 
 //Android Classes
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//OpenCV classes
-import org.opencv.android.JavaCameraView;
 import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
-import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
-
-import org.opencv.android.OpenCVLoader;
+//OpenCV classes
 
 public class MainActivity_show_camera extends AppCompatActivity implements CvCameraViewListener2{
     private static final String TAG = "OCVSample::Activty";
     private static final int backgroundSpinnerOption = 0;
-    private static final int textSpinnerOption = 1;
 
     //Loads camera view of OpenCV for us to use.
     private ZoomCameraView mOpenCvCameraView;
 
     //SpinnerHandler
     private SpinnerHandler spinnerHandler;
-    private SpinnerHandler textSpinnerHandler;
-
-    //Used in Camera selection from menu
-    private boolean mIsJavaCamera = true;
-    private MenuItem mItemSwitchCamera = null;
 
     //FilterActivated
     private boolean filteringIsEnabled;
@@ -59,9 +44,6 @@ public class MainActivity_show_camera extends AppCompatActivity implements CvCam
     TextView backgroundTextView;
     TextView textTextView;
 
-    //ZoomCameraView
-    ZoomCameraView zoomCameraView;
-
     Mat mRgba;
     Mat mGrayScale;
     Mat mRgbaT;
@@ -69,8 +51,7 @@ public class MainActivity_show_camera extends AppCompatActivity implements CvCam
 
     public MainActivity_show_camera(){
         spinnerHandler = new SpinnerHandler(backgroundSpinnerOption);
-        textSpinnerHandler = new SpinnerHandler(textSpinnerOption);
-        //TO DO: THIS IS HARDCODED! SHOULD BE MARKED IN SETTINGS!
+        //TODO: THIS IS HARDCODED! SHOULD BE MARKED IN SETTINGS!
         filteringIsEnabled = true;
     }
 
@@ -143,16 +124,17 @@ public class MainActivity_show_camera extends AppCompatActivity implements CvCam
             Mat backgroundColor = new Mat();
 
             //Text threshold
-            //TO DO: should inRange be used ?
-            Imgproc.threshold(grayScale,textColor,128,255,Imgproc.THRESH_OTSU);
-            mRgba.setTo(FilterHandler.getInstance().getTextColor(),textColor);
+            //TODO: should inRange be used ?
+            boolean isFilterNone = FilterHandler.getInstance().isFilterNone();
 
-            //Background threshold
-            Imgproc.threshold(grayScale,backgroundColor,100,255,Imgproc.THRESH_BINARY);
-            mRgba.setTo(FilterHandler.getInstance().getBackgroundColor(),backgroundColor);
+            if (!isFilterNone){
+                Imgproc.threshold(grayScale,textColor,128,255,Imgproc.THRESH_OTSU);
+                mRgba.setTo(FilterHandler.getInstance().getTextColor(),textColor);
 
-
-
+                //Background threshold
+                Imgproc.threshold(grayScale,backgroundColor,100,255,Imgproc.THRESH_BINARY);
+                mRgba.setTo(FilterHandler.getInstance().getBackgroundColor(),backgroundColor);
+            }else{return grayScale;}
 
             grayScale.release();
             backgroundColor.release();
