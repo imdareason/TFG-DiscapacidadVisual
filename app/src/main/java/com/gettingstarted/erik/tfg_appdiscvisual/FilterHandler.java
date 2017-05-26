@@ -24,7 +24,7 @@ public class FilterHandler {
 
     private boolean filterNone;
 
-    private static final int GrayScale = 0;
+    /*private static final int GrayScale = 0;
     private static final int BlueText = 1;
     private static final int Black = 2;
     private static final int Yellow = 3;
@@ -32,6 +32,16 @@ public class FilterHandler {
     private static final int Pink = 5;
     private static final int Blue = 6;
     private static final int BlueWhiteText = 7;
+    private static final int White = 8;*/
+
+    private static final int GrayScale = 0;
+    //private static final int BlueText = 1;
+    private static final int Black = 1;
+    private static final int Yellow = 2;
+    //private static final int YellowBlueText = 4;
+    private static final int Pink = 3;
+    private static final int Blue = 4;
+    //private static final int BlueWhiteText = 7;
     private static final int White = 8;
 
 
@@ -67,7 +77,7 @@ public class FilterHandler {
                 break;
             case Black:
                 backgroundColor = new Scalar(0,0,0);
-                setTextColorOption(Black);
+                setTextColorOption(White);
                 setFilterNone(false);
                 break;
             case Yellow:
@@ -85,7 +95,7 @@ public class FilterHandler {
                 setTextColorOption(Black);
                 setFilterNone(false);
                 break;
-            case BlueWhiteText:
+            /*case BlueWhiteText:
                 backgroundColor = new Scalar(0,255,255);
                 setTextColorOption(White);
                 setFilterNone(false);
@@ -98,7 +108,7 @@ public class FilterHandler {
             case YellowBlueText:
                 backgroundColor = new Scalar(255,255,0);
                 setTextColorOption(BlueText);
-                setFilterNone(false);
+                setFilterNone(false);*/
         }
 
     }
@@ -108,8 +118,8 @@ public class FilterHandler {
             case Black:
                 textColor = new Scalar(0,0,0);
                 break;
-            case BlueText:
-                textColor = new Scalar(0,128,255);
+            /*case BlueText:
+                textColor = new Scalar(0,128,255);*/
             case White:
                 textColor = new Scalar(255,255,255);
                 break;

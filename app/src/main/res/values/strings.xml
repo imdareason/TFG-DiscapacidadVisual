@@ -1,9 +1,30 @@
 <resources>
-    <string name="app_name">TFG-AppDiscVisual</string>
+    <string name="app_name">TFG-App</string>
     <string name="settings">Settings</string>
     <string name="backgroundOptionsName">BackgroundColor</string>
     <string name="textColorOptionsName">TextColor</string>
+    <string name="not_implemented_yet">Not Implemented Yet</string>
+    <string name="color_filter">Color Filter:</string>
+    <string name="color_detection">Color Detection</string>
+    <string name="grayScale">Gray scale</string>
+    <string name="blackAndWhite">Black and White</string>
+    <string name="YellowAndBlack">Yellow and Black</string>
+    <string name="PinkAndBlack">Pink and Black</string>
+    <string name="BlueAndBlack">Blue and Black</string>
+
     <string-array name="backgroundColorFilterNames">
+        <item>@string/grayScale</item>
+        <item>@string/blackAndWhite</item>
+        <item>@string/YellowAndBlack</item>
+        <item>@string/PinkAndBlack</item>
+        <item>@string/BlueAndBlack</item>
+    </string-array>
+    <string-array name="textColorFilterNames">
+        <item>Black</item>
+        <item>White</item>
+    </string-array>
+
+    <string-array name="backgroundColorFilterNamesFinal">
         <item>Escala de grises</item>
         <item>Blanco y azul</item>
         <item>Negro y Blanco</item>
@@ -13,8 +34,6 @@
         <item>Azul y Negro</item>
         <item>Azul y Blanco</item>
     </string-array>
-    <string-array name="textColorFilterNames">
-        <item>Black</item>
-        <item>White</item>
-    </string-array>
+
+
 </resources>

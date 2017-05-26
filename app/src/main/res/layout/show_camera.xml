@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:onClick="settingsClicked"
-            android:text="Settings"
+            android:text="@string/settings"
             android:layout_gravity="left"
             android:layout_weight="1"/>
 
@@ -31,7 +31,7 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/settingsButton"
             android:layout_alignParentTop="true"
-            android:text="Color Filter:"
+            android:text="@string/color_filter"
             android:background="@color/darkGray"
             android:layout_weight="1"
             android:gravity="center"/>
@@ -51,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/colorDetection"
-            android:text="Color Detection"
+            android:text="@string/color_detection"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@id/spinner"
             android:onClick="colorDetectionClicked"

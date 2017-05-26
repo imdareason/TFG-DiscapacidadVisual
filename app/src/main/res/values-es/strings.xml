@@ -1,2 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_name">TFG-App</string>
+    <string name="BlueAndBlack">Azul y Negro</string>
+    <string name="PinkAndBlack">Rosa y Negro</string>
+    <string name="YellowAndBlack">Amarillo y Negro</string>
+    <string name="backgroundOptionsName">Color de fondo</string>
+    <string name="blackAndWhite">Negro y Blanco</string>
+    <string name="color_detection">Detección de color</string>
+    <string name="color_filter">Filtro de color</string>
+    <string name="grayScale">Escala de grises</string>
+    <string name="not_implemented_yet">No implementado aún</string>
+    <string name="settings">Ajustes</string>
+    <string name="textColorOptionsName">Color del texto</string>
+</resources>

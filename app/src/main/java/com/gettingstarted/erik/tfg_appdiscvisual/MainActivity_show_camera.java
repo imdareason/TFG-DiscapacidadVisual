@@ -161,7 +161,7 @@ public class MainActivity_show_camera extends AppCompatActivity implements CvCam
     };
 
     public void settingsClicked(View view){
-        Toast.makeText(getApplicationContext(),"Clicked Settings",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(),R.string.not_implemented_yet,Toast.LENGTH_SHORT).show();
     }
 
 
@@ -173,7 +173,7 @@ public class MainActivity_show_camera extends AppCompatActivity implements CvCam
         Imgproc.cvtColor(mRgba,HSV,Imgproc.COLOR_RGB2HSV);
 
         Core.inRange(HSV,new Scalar(0,60,60), new Scalar(0,100,100),threshold);
-        Toast.makeText(getApplicationContext(),"Clicked ColorDetection"+threshold.toString(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(),R.string.not_implemented_yet,Toast.LENGTH_SHORT).show();
     }
 
     private void hideFilteringViews(){

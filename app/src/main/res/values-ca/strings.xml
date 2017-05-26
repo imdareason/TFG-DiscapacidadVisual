@@ -1,2 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_name">TFG-App</string>
+    <string name="BlueAndBlack">Blau i Negre</string>
+    <string name="PinkAndBlack">Rosa i Negre</string>
+    <string name="YellowAndBlack">Groc i Negre</string>
+    <string name="backgroundOptionsName">Color de fons</string>
+    <string name="blackAndWhite">Negre i Blanc</string>
+    <string name="color_detection">Detecció de color</string>
+    <string name="color_filter">Filtre de color</string>
+    <string name="grayScale">Escala de grisos</string>
+    <string name="not_implemented_yet">Encara no implementat</string>
+    <string name="settings">Configuració</string>
+    <string name="textColorOptionsName">Color de texte</string>
+</resources>
