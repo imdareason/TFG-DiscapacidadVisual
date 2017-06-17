@@ -15,6 +15,7 @@ public class SpinnerHandler implements AdapterView.OnItemSelectedListener {
     private static final String TAG = "SpinnerHandler";
     private FilterHandler filterHandler;
     private int typeSpinner;
+    public boolean filterClicked;
 
 
     public SpinnerHandler (int type){
@@ -25,6 +26,7 @@ public class SpinnerHandler implements AdapterView.OnItemSelectedListener {
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         /*Log.d(TAG,"SpinnerSelected position:");
         Log.d(TAG, String.valueOf(position));*/
+        filterClicked = true;
         if (typeSpinner==0){
             filterHandler.setBackgroundColorOption(position);
         }else{

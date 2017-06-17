@@ -3,6 +3,8 @@ package com.gettingstarted.erik.tfg_appdiscvisual;
 //Android Classes
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -21,10 +23,12 @@ import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 //OpenCV classes
@@ -41,6 +45,7 @@ public class MainActivity_show_camera extends AppCompatActivity implements CvCam
 
     //FilterActivated
     private boolean filteringIsEnabled;
+    private boolean colorDetectionClicked;
 
     //Spinners and TextView
     Spinner backgroundSpinner;
@@ -148,17 +153,23 @@ public class MainActivity_show_camera extends AppCompatActivity implements CvCam
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
         mRgba = inputFrame.rgba();
 
-        if (filteringIsEnabled){
+        if (spinnerHandler.filterClicked){
+            colorDetectionClicked = false;
             Mat grayScale = inputFrame.gray();
             Mat textColor = new Mat();
             Mat backgroundColor = new Mat();
 
-            //Text threshold
-            //TODO: should inRange be used ?
+
             boolean isFilterNone = FilterHandler.getInstance().isFilterNone();
 
             if (!isFilterNone){
-                Imgproc.threshold(grayScale,textColor,128,255,Imgproc.THRESH_OTSU);
+
+                Imgproc.GaussianBlur(grayScale,textColor, new Size(3,3),0);
+                Imgproc.adaptiveThreshold(textColor,textColor,255,Imgproc.ADAPTIVE_THRESH_MEAN_C,Imgproc.THRESH_BINARY,75,10);
+                Core.bitwise_not(textColor,textColor);
+
+                //Text
+                //TODO: should inRange be used ?
                 mRgba.setTo(FilterHandler.getInstance().getTextColor(),textColor);
 
                 //Background threshold
