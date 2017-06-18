@@ -27,7 +27,6 @@ import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
@@ -76,7 +75,7 @@ public class MainActivity_show_camera extends AppCompatActivity implements CvCam
         backgroundSpinner = (Spinner)findViewById(R.id.spinner);
         backgroundTextView = (TextView)findViewById(R.id.backgroundText);
         if (!filteringIsEnabled){
-            hideFilteringViews();
+            //hideFilteringViews();
         }
 
         backgroundSpinner.setOnItemSelectedListener(spinnerHandler);
@@ -139,7 +138,7 @@ public class MainActivity_show_camera extends AppCompatActivity implements CvCam
     }
     public void onCameraViewStarted(int width, int height ){
         mRgba = new Mat(height,width,CvType.CV_8U);
-        mGrayScale = new Mat(height,width,CvType.CV_8U);
+        mGrayScale = new Mat(height,width,CvType.CV_8UC3);
         mRgbaT = new Mat(height,width,CvType.CV_8UC4);
 
     }
@@ -152,6 +151,7 @@ public class MainActivity_show_camera extends AppCompatActivity implements CvCam
     @Override
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
         mRgba = inputFrame.rgba();
+        mGrayScale = inputFrame.rgba();
 
         if (spinnerHandler.filterClicked){
             colorDetectionClicked = false;
@@ -167,7 +167,6 @@ public class MainActivity_show_camera extends AppCompatActivity implements CvCam
                 Imgproc.GaussianBlur(grayScale,textColor, new Size(3,3),0);
                 Imgproc.adaptiveThreshold(textColor,textColor,255,Imgproc.ADAPTIVE_THRESH_MEAN_C,Imgproc.THRESH_BINARY,75,10);
                 Core.bitwise_not(textColor,textColor);
-
                 //Text
                 //TODO: should inRange be used ?
                 mRgba.setTo(FilterHandler.getInstance().getTextColor(),textColor);
@@ -206,21 +205,48 @@ public class MainActivity_show_camera extends AppCompatActivity implements CvCam
     }
 
 
-    public void colorDetectionClicked(View view){
+    public void colorDetectionClicked(View view) {
 
-        Mat HSV = new Mat();
-        Mat threshold = new Mat();
+        colorDetectionClicked = true;
+        spinnerHandler.filterClicked = false;
+        final String[] colorDetected = {""};
+        Bitmap bmp = Bitmap.createBitmap(mRgba.cols(), mRgba.rows(), Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(mGrayScale, bmp);
+        int redBucket = 0;
+        int greenBucket = 0;
+        int blueBucket = 0;
+        int pixelCount = 0;
 
-        Imgproc.cvtColor(mRgba,HSV,Imgproc.COLOR_RGB2HSV);
+        for (int y = 0; y < bmp.getHeight(); y++) {
+            for (int x = 0; x < bmp.getWidth(); x++) {
+                int c = bmp.getPixel(x, y);
 
-        Core.inRange(HSV,new Scalar(0,60,60), new Scalar(0,100,100),threshold);
-        Toast.makeText(getApplicationContext(),R.string.not_implemented_yet,Toast.LENGTH_SHORT).show();
-    }
+                pixelCount++;
+                redBucket += Color.red(c);
+                greenBucket += Color.green(c);
+                blueBucket += Color.blue(c);
+                // does alpha matter?
+            }
+        }
 
-    private void hideFilteringViews(){
-        backgroundSpinner.setVisibility(Spinner.GONE);
-        textSpinner.setVisibility(Spinner.GONE);
-        backgroundTextView.setVisibility(TextView.GONE);
-        textTextView.setVisibility(TextView.GONE);
+        Color mainColor = new Color();
+        mainColor.rgb(redBucket / pixelCount,
+                greenBucket / pixelCount,
+                blueBucket / pixelCount);
+        String hexColor = String.format("%06X", (0xFFFFFF & Color.rgb(redBucket / pixelCount,
+                greenBucket / pixelCount,
+                blueBucket / pixelCount)));
+
+
+        RequestManager requestManager = new RequestManager();
+        requestManager.setColorToGet(hexColor);
+        requestManager.start();
+        try {
+            requestManager.join();
+            Toast.makeText(getApplicationContext(), requestManager.getColorName(), Toast.LENGTH_LONG).show();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 }
