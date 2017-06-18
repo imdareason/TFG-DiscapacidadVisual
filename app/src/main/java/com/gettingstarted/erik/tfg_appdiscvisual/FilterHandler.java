@@ -32,8 +32,8 @@ public class FilterHandler {
     private static final int Pink = 5;
     private static final int Blue = 6;
     private static final int BlueWhiteText = 7;
-    private static final int White = 8;*/
-
+    private static final int White = 8;
+    private static final int BlueText = 5;*/
     private static final int GrayScale = 0;
     //private static final int BlueText = 1;
     private static final int Black = 1;
@@ -119,7 +119,7 @@ public class FilterHandler {
                 textColor = new Scalar(0,0,0);
                 break;
             /*case BlueText:
-                textColor = new Scalar(0,128,255);*/
+                textColor = new Scalar(0,255,0);*/
             case White:
                 textColor = new Scalar(255,255,255);
                 break;

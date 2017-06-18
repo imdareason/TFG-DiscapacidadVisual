@@ -41,8 +41,11 @@ public class RequestManager extends Thread {
     public void run() {
         Document doc;
         try {
+
             String totalURL = baseURL+colorToGet;
+            totalURL = totalURL.toLowerCase();
             doc = Jsoup.connect(totalURL).get();
+            //Getting into needed node to get nameColorString
             Node child = doc.childNode(doc.childNodeSize()-1);
             child = child.childNode(3);
             child = child.childNode(5);

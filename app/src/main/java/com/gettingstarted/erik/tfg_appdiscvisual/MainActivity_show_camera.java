@@ -209,37 +209,14 @@ public class MainActivity_show_camera extends AppCompatActivity implements CvCam
 
         colorDetectionClicked = true;
         spinnerHandler.filterClicked = false;
-        final String[] colorDetected = {""};
+
         Bitmap bmp = Bitmap.createBitmap(mRgba.cols(), mRgba.rows(), Bitmap.Config.ARGB_8888);
+
         Utils.matToBitmap(mGrayScale, bmp);
-        int redBucket = 0;
-        int greenBucket = 0;
-        int blueBucket = 0;
-        int pixelCount = 0;
-
-        for (int y = 0; y < bmp.getHeight(); y++) {
-            for (int x = 0; x < bmp.getWidth(); x++) {
-                int c = bmp.getPixel(x, y);
-
-                pixelCount++;
-                redBucket += Color.red(c);
-                greenBucket += Color.green(c);
-                blueBucket += Color.blue(c);
-                // does alpha matter?
-            }
-        }
-
-        Color mainColor = new Color();
-        mainColor.rgb(redBucket / pixelCount,
-                greenBucket / pixelCount,
-                blueBucket / pixelCount);
-        String hexColor = String.format("%06X", (0xFFFFFF & Color.rgb(redBucket / pixelCount,
-                greenBucket / pixelCount,
-                blueBucket / pixelCount)));
-
+        ColorDetector colorDetector = new ColorDetector();
 
         RequestManager requestManager = new RequestManager();
-        requestManager.setColorToGet(hexColor);
+        requestManager.setColorToGet(colorDetector.getHexColor(bmp));
         requestManager.start();
         try {
             requestManager.join();
